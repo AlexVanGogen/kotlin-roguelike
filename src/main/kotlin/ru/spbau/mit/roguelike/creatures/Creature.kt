@@ -1,5 +1,6 @@
 package ru.spbau.mit.roguelike.creatures
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import ru.spbau.mit.roguelike.ai.CreatureAI
 import ru.spbau.mit.roguelike.ai.PlayerAI
 import ru.spbau.mit.roguelike.world.Tile
@@ -9,7 +10,7 @@ import java.awt.Color
 import kotlin.math.max
 
 
-class Creature(val world: World, val glyph: Char, val color: Color, val visionRadius: Int, val maxHP: Int, val attackStat: Int, val defenseStat: Int) {
+class Creature(val world: World, val name: String, val glyph: Char, val color: Color, val visionRadius: Int, val maxHP: Int, val attackStat: Int, val defenseStat: Int) {
 
     private lateinit var ai: CreatureAI
     var x: Int = 0
@@ -21,6 +22,9 @@ class Creature(val world: World, val glyph: Char, val color: Color, val visionRa
     }
 
     fun moveBy(mx: Int, my: Int) {
+        if (mx == 0 && my == 0) {
+            return
+        }
         val creatureOnNextPosition = world.tryToGetCreatureInPosition(x + mx, y + my)
         if (creatureOnNextPosition == null) {
             ai.onEnter(x + mx, y + my, world.tileMap.getTile(x + mx, y + my))
@@ -33,15 +37,15 @@ class Creature(val world: World, val glyph: Char, val color: Color, val visionRa
         var amount = max(0, attackStat - creatureOnNextPosition.defenseStat)
         amount = (Math.random() * amount).toInt() + 1
         creatureOnNextPosition.lowerHP(amount, this)
-        notify("You attacked the ${creatureOnNextPosition.glyph} for $amount damage")
-        creatureOnNextPosition.notify("The $glyph attacks you for $amount damage")
+        notify("You attacked the ${creatureOnNextPosition.name} for $amount damage")
+        creatureOnNextPosition.notify("The $name attacks you for $amount damage")
     }
 
     private fun lowerHP(amount: Int, by: Creature) {
         actualHP -= amount
         if (isDead()) {
             world.annihilate(this)
-            by.notify("$glyph has been defeated")
+            by.notify("$name has been defeated")
         }
     }
 
@@ -67,4 +71,10 @@ class Creature(val world: World, val glyph: Char, val color: Color, val visionRa
     fun tile(wx: Int, wy: Int): Tile {
         return world.tileMap.getTile(wx, wy)
     }
+
+    fun doAction(s: String) {
+        notify(s)
+    }
+
+    fun getCreatureOnPosition(wx: Int, wy: Int) = world.tryToGetCreatureInPosition(wx, wy)
 }

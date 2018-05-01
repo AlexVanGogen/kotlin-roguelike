@@ -7,12 +7,17 @@ import ru.spbau.mit.roguelike.world.World
 class CreaturesEngine {
 
     private val NUMBER_OF_FUNGUSES = 10
+    private val NUMBER_OF_BATS = 10
 
     fun createCreatures(creatureFactory: CreatureFactory, messages: ArrayList<String>) {
         creatureFactory.createPlayer(messages)
 
         for (Unit in 1..NUMBER_OF_FUNGUSES) {
             creatureFactory.createFungus()
+        }
+
+        for (Unit in 1..NUMBER_OF_BATS) {
+            creatureFactory.createBat()
         }
     }
 

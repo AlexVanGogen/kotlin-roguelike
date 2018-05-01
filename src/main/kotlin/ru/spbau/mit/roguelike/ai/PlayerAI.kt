@@ -6,12 +6,12 @@ import ru.spbau.mit.roguelike.world.Tile
 
 class PlayerAI(val creature: Creature, val messages: ArrayList<String>, private val fieldOfView: FieldOfView): CreatureAI(creature) {
 
-    override fun onEnter(x: Int, y: Int, tile: Tile) {
-        if (tile.isGround()) {
-            creature.x = x
-            creature.y = y
-        }
-    }
+//    override fun onEnter(x: Int, y: Int, tile: Tile) {
+//        if (tile.isGround()) {
+//            creature.x = x
+//            creature.y = y
+//        }
+//    }
 
     override fun onNotify(message: String) {
         messages.add(message)

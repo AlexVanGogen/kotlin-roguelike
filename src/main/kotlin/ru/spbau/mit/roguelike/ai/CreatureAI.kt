@@ -1,5 +1,6 @@
 package ru.spbau.mit.roguelike.ai
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import ru.spbau.mit.roguelike.creatures.Creature
 import ru.spbau.mit.roguelike.vision.Line
 import ru.spbau.mit.roguelike.world.Tile
@@ -14,7 +15,15 @@ open class CreatureAI(creature: Creature) {
         this.creature = creature
     }
 
-    open fun onEnter(x: Int, y: Int, tile: Tile) {}
+    open fun onEnter(x: Int, y: Int, tile: Tile) {
+        if (tile.isGround()) {
+            creature.x = x
+            creature.y = y
+        } else {
+            creature.doAction("Bump into a wall")
+        }
+    }
+
     open fun onUpdate() {}
     open fun onNotify(message: String) {}
 
@@ -31,5 +40,16 @@ open class CreatureAI(creature: Creature) {
         }
 
         return true
+    }
+
+    open fun wander() {
+        val mx: Int = (Math.random() * 3).toInt() - 1
+        val my: Int = (Math.random() * 3).toInt() - 1
+
+        val other = creature.getCreatureOnPosition(mx, my)
+
+        if (other == null || other.glyph != creature.glyph) {
+            creature.moveBy(mx, my)
+        }
     }
 }
