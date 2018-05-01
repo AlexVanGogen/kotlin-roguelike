@@ -23,4 +23,6 @@ hs_err_pid*
 
 .idea/
 .gradle/
-!gradle/gradle-wrapper.jat
+build/
+!gradle-wrapper.jar
+!asciiPanel.jar
