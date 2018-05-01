@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/roguelike-kotlin.iml" filepath="$PROJECT_DIR$/.idea/modules/roguelike-kotlin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/roguelike-kotlin_main.iml" filepath="$PROJECT_DIR$/.idea/modules/roguelike-kotlin_main.iml" group="roguelike-kotlin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/roguelike-kotlin_test.iml" filepath="$PROJECT_DIR$/.idea/modules/roguelike-kotlin_test.iml" group="roguelike-kotlin" />
+    </modules>
+  </component>
+</project>
