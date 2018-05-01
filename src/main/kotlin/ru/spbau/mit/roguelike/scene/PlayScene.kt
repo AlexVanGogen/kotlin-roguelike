@@ -5,11 +5,12 @@ import ru.spbau.mit.roguelike.ai.PlayerAI
 import ru.spbau.mit.roguelike.creatures.Creature
 import ru.spbau.mit.roguelike.creatures.CreatureFactory
 import ru.spbau.mit.roguelike.engine.CreaturesEngine
+import ru.spbau.mit.roguelike.vision.FieldOfView
 import ru.spbau.mit.roguelike.world.MapBuilder
 import ru.spbau.mit.roguelike.world.World
 import java.awt.event.KeyEvent
 import sun.audio.AudioPlayer.player
-
+import java.awt.Color
 
 
 class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Scene {
@@ -22,9 +23,12 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
     private val creatureFactory: CreatureFactory
     private val creaturesEngine: CreaturesEngine
     private val messages = ArrayList<String>()
+    private val fieldOfView: FieldOfView
+
     init {
         createMap()
-        creatureFactory = CreatureFactory(world)
+        fieldOfView = FieldOfView(world)
+        creatureFactory = CreatureFactory(world, fieldOfView)
         creaturesEngine = CreaturesEngine()
         creaturesEngine.createCreatures(creatureFactory, messages)
         player = world.getPlayer()!!
@@ -34,7 +38,6 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         val text = "Walking..."
         terminal.write(text, sceneWidth - text.length - 1, 1)
 
-        displayMap(terminal)
         for (creature in world.allCreatures) {
             terminal.write(creature.glyph, creature.x, creature.y, creature.color)
         }
@@ -42,6 +45,7 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         val stats = String.format(" %3d/%3d hp", player.actualHP, player.maxHP)
         terminal.write(stats, 1, sceneHeight - 1)
 
+        displayMap(terminal, 0, 0)
         displayMessages(terminal, messages)
     }
 
@@ -62,10 +66,24 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         world = World(MapBuilder(gameMapWidth, gameMapHeight).makeCaves().buildMap())
     }
 
-    private fun displayMap(terminal: AsciiPanel) {
+    private fun displayMap(terminal: AsciiPanel, left: Int, top: Int) {
+        fieldOfView.update(player.x, player.y, player.visionRadius)
+
         for (x in 0 until gameMapWidth) {
             for (y in 0 until gameMapHeight) {
-                terminal.write(world.tileMap.getTile(x, y).getGlyph(), x, y, world.tileMap.getTile(x, y).getColor())
+                val wx = x + left
+                val wy = y + top
+                val tile = world.tileMap.getTile(wx, wy)
+
+                if (player.canSee(wx, wy)) {
+                    terminal.write(world.getGlyph(wx, wy), x, y - top, world.getColor(wx, wy))
+                } else {
+                    if (fieldOfView.hadSeenBefore(x, y)) {
+                        terminal.write(tile.getGlyph(), x, y, Color.darkGray)
+                    } else {
+                        terminal.write(tile.getGlyph(), x, y, Color.black)
+                    }
+                }
             }
         }
     }

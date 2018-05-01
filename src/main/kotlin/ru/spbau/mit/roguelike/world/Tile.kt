@@ -7,7 +7,8 @@ enum class Tile(private val glyph: Char, private val color: Color) {
 
     FLOOR('.', AsciiPanel.yellow),
     WALL('#', AsciiPanel.red),
-    BOUNDS('x', AsciiPanel.brightBlack);
+    BOUNDS('x', AsciiPanel.brightBlack),
+    UNKNOWN(' ', AsciiPanel.white);
 
     fun getGlyph() = glyph
     fun getColor() = color

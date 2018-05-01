@@ -8,7 +8,8 @@ import ru.spbau.mit.roguelike.world.World
 import java.awt.Color
 import kotlin.math.max
 
-class Creature(private val world: World, val glyph: Char, val color: Color, val maxHP: Int, val attackStat: Int, val defenseStat: Int) {
+
+class Creature(val world: World, val glyph: Char, val color: Color, val visionRadius: Int, val maxHP: Int, val attackStat: Int, val defenseStat: Int) {
 
     private lateinit var ai: CreatureAI
     var x: Int = 0
@@ -59,5 +60,11 @@ class Creature(private val world: World, val glyph: Char, val color: Color, val 
 
     fun notify(message: String, vararg params: Any) {
         ai.onNotify(String.format(message, *params))
+    }
+
+    fun canSee(x: Int, y: Int) = ai.canSee(x, y)
+
+    fun tile(wx: Int, wy: Int): Tile {
+        return world.tileMap.getTile(wx, wy)
     }
 }
