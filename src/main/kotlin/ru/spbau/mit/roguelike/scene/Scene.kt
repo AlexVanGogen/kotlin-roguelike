@@ -6,5 +6,5 @@ import java.awt.event.KeyEvent
 interface Scene {
 
     fun displayOutput(terminal: AsciiPanel)
-    fun respondToUserInput(pressedKey: KeyEvent): Scene
+    fun respondToUserInput(pressedKey: KeyEvent): Scene?
 }

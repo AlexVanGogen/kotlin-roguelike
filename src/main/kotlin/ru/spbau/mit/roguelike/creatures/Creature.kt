@@ -3,6 +3,8 @@ package ru.spbau.mit.roguelike.creatures
 import com.sun.org.apache.xpath.internal.operations.Bool
 import ru.spbau.mit.roguelike.ai.CreatureAI
 import ru.spbau.mit.roguelike.ai.PlayerAI
+import ru.spbau.mit.roguelike.inventory.Inventory
+import ru.spbau.mit.roguelike.stuff.Item
 import ru.spbau.mit.roguelike.world.Tile
 import ru.spbau.mit.roguelike.world.TileMap
 import ru.spbau.mit.roguelike.world.World
@@ -10,12 +12,21 @@ import java.awt.Color
 import kotlin.math.max
 
 
-class Creature(val world: World, val name: String, val glyph: Char, val color: Color, val visionRadius: Int, val maxHP: Int, val attackStat: Int, val defenseStat: Int) {
+class Creature(val world: World,
+               val name: String,
+               val glyph: Char,
+               val color: Color,
+               val visionRadius: Int,
+               val maxHP: Int,
+               val attackStat: Int,
+               val defenseStat: Int,
+               val maxItemsInInventory: Int = 0) {
 
     private lateinit var ai: CreatureAI
     var x: Int = 0
     var y: Int = 0
     var actualHP: Int = maxHP
+    val inventory = Inventory(maxItemsInInventory)
 
     fun setAI(creatureAI: CreatureAI) {
         ai = creatureAI
@@ -77,4 +88,27 @@ class Creature(val world: World, val name: String, val glyph: Char, val color: C
     }
 
     fun getCreatureOnPosition(wx: Int, wy: Int) = world.tryToGetCreatureInPosition(wx, wy)
+
+    fun pickupItem() {
+        val itemOnPosition = world.getItem(x, y)
+
+        if (itemOnPosition == null) {
+            doAction("Sorry, nothing to grab!")
+            return
+        }
+
+        if (inventory.isFull()) {
+            doAction("Cannot grab ${itemOnPosition.getName()}: inventory is full!")
+        } else {
+            doAction("Picked up ${itemOnPosition.getName()}")
+            world.removeItem(x, y)
+            inventory.add(itemOnPosition)
+        }
+    }
+
+    fun drop(item: Item) {
+        doAction("Dropped ${item.getName()}")
+        inventory.remove(item)
+        world.addItemAtEmptyPlace(item, x, y)
+    }
 }

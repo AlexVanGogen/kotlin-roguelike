@@ -1,15 +1,15 @@
 package ru.spbau.mit.roguelike.scene
 
 import asciiPanel.AsciiPanel
-import ru.spbau.mit.roguelike.ai.PlayerAI
 import ru.spbau.mit.roguelike.creatures.Creature
 import ru.spbau.mit.roguelike.creatures.CreatureFactory
 import ru.spbau.mit.roguelike.engine.CreaturesEngine
+import ru.spbau.mit.roguelike.engine.ItemsEngine
+import ru.spbau.mit.roguelike.stuff.StuffFactory
 import ru.spbau.mit.roguelike.vision.FieldOfView
 import ru.spbau.mit.roguelike.world.MapBuilder
 import ru.spbau.mit.roguelike.world.World
 import java.awt.event.KeyEvent
-import sun.audio.AudioPlayer.player
 import java.awt.Color
 
 
@@ -22,8 +22,12 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
     private val player: Creature
     private val creatureFactory: CreatureFactory
     private val creaturesEngine: CreaturesEngine
+    private val stuffFactory: StuffFactory
+    private val stuffEngine: ItemsEngine
     private val messages = ArrayList<String>()
     private val fieldOfView: FieldOfView
+
+    private var subscene: Scene? = null
 
     init {
         createMap()
@@ -31,6 +35,10 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         creatureFactory = CreatureFactory(world, fieldOfView)
         creaturesEngine = CreaturesEngine()
         creaturesEngine.createCreatures(creatureFactory, messages)
+
+        stuffFactory = StuffFactory(world, fieldOfView)
+        stuffEngine = ItemsEngine()
+        stuffEngine.createItems(stuffFactory)
         player = world.getPlayer()!!
     }
 
@@ -42,23 +50,44 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
             terminal.write(creature.glyph, creature.x, creature.y, creature.color)
         }
 
+        for (x in world.itemsMap.indices) {
+            for (y in world.itemsMap[0].indices) {
+                val item = world.getItem(x, y)
+                if (item != null) {
+                    terminal.write(item.getGlyph(), x, y, item.getColor())
+                }
+            }
+        }
+
         val stats = String.format(" %3d/%3d hp", player.actualHP, player.maxHP)
         terminal.write(stats, 1, sceneHeight - 1)
 
         displayMap(terminal, 0, 0)
         displayMessages(terminal, messages)
+
+        if (subscene != null) {
+            subscene!!.displayOutput(terminal)
+        }
     }
 
     override fun respondToUserInput(pressedKey: KeyEvent): Scene {
-        when (pressedKey.keyCode) {
-            KeyEvent.VK_ESCAPE -> return LoseScene(sceneWidth, sceneHeight)
-            KeyEvent.VK_ENTER -> return WinScene(sceneWidth, sceneHeight)
-            KeyEvent.VK_UP -> player.moveBy(0, -1)
-            KeyEvent.VK_DOWN -> player.moveBy(0, 1)
-            KeyEvent.VK_LEFT -> player.moveBy(-1, 0)
-            KeyEvent.VK_RIGHT -> player.moveBy(1, 0)
+        if (subscene != null) {
+            subscene = subscene!!.respondToUserInput(pressedKey)
+        } else {
+            when (pressedKey.keyCode) {
+                KeyEvent.VK_ESCAPE -> return LoseScene(sceneWidth, sceneHeight)
+                KeyEvent.VK_ENTER -> return WinScene(sceneWidth, sceneHeight)
+                KeyEvent.VK_UP -> player.moveBy(0, -1)
+                KeyEvent.VK_DOWN -> player.moveBy(0, 1)
+                KeyEvent.VK_LEFT -> player.moveBy(-1, 0)
+                KeyEvent.VK_RIGHT -> player.moveBy(1, 0)
+                KeyEvent.VK_G -> player.pickupItem()
+                KeyEvent.VK_I -> subscene = DropScene(player)
+            }
         }
-        creaturesEngine.updateCreatures(world)
+        if (subscene == null) {
+            creaturesEngine.updateCreatures(world)
+        }
         return this
     }
 

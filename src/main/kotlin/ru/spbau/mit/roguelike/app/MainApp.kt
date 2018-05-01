@@ -19,7 +19,7 @@ class MainApp: JFrame(), KeyListener {
             MAIN_WINDOW_HEIGHT / PANEL_HEIGHT_PROPORTION
     )
 
-    private var currentScene: Scene
+    private var currentScene: Scene?
 
     init {
         add(terminal)
@@ -34,7 +34,7 @@ class MainApp: JFrame(), KeyListener {
 
     override fun keyPressed(e: KeyEvent?) {
         if (e != null) {
-            currentScene = currentScene.respondToUserInput(e)
+            currentScene = currentScene?.respondToUserInput(e)
         }
         repaint()
     }
@@ -44,7 +44,7 @@ class MainApp: JFrame(), KeyListener {
 
     override fun repaint() {
         terminal.clear()
-        currentScene.displayOutput(terminal)
+        currentScene?.displayOutput(terminal)
         super.repaint()
     }
 }

@@ -19,7 +19,7 @@ class CreatureFactory(val world: World, private val fieldOfView: FieldOfView) {
     private val FUNGUS_DEF = 1
 
     fun createPlayer(messages: ArrayList<String>): Creature {
-        val player = Creature(world = world, name = "player", glyph = '@', color = AsciiPanel.brightWhite, visionRadius = 9, maxHP = PLAYER_HP, attackStat = PLAYER_ATK, defenseStat = PLAYER_DEF)
+        val player = Creature(world = world, name = "player", glyph = '@', color = AsciiPanel.brightWhite, visionRadius = 9, maxHP = PLAYER_HP, attackStat = PLAYER_ATK, defenseStat = PLAYER_DEF, maxItemsInInventory = 20)
         world.initializeCreaturePosition(player)
         world.allCreatures.add(player)
         PlayerAI(player, messages, fieldOfView)
