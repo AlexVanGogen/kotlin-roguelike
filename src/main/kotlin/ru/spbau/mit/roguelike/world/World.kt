@@ -11,6 +11,7 @@ class World(var tileMap: TileMap) {
 
     val allCreatures: MutableList<Creature> = mutableListOf()
     val itemsMap: Array<Array<Item?>> = Array(tileMap.width, {Array(tileMap.height, { null as Item? })})
+    lateinit var positionsReachableForPlayer: MutableList<Point>
 
     fun tryToGetCreatureInPosition(x: Int, y: Int): Creature? {
         for (creature in allCreatures) {
@@ -50,6 +51,12 @@ class World(var tileMap: TileMap) {
                 return
             }
         }
+    }
+
+    fun initializeItemPositionReachableForPlayer(item: Item) {
+        val random = Random(42)
+        val appropriatePoint = positionsReachableForPlayer[random.nextInt(positionsReachableForPlayer.size)]
+        itemsMap[appropriatePoint.x][appropriatePoint.y] = item
     }
 
     fun getPlayer(): Creature? = allCreatures[0]

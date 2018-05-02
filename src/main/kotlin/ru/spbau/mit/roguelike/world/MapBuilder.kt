@@ -19,7 +19,11 @@ class MapBuilder(private val width: Int, private val height: Int) {
     private fun buildRandomMap(): MapBuilder {
         for (x in 0 until currentMap.width) {
             for (y in 0 until currentMap.height) {
-                currentMap.setTile(x, y, if (Math.random() < 0.5) Tile.FLOOR else Tile.WALL)
+                if (x == 0 || y == 0 || x == currentMap.width - 1 || y == currentMap.height - 1) {
+                    currentMap.setTile(x, y, Tile.BOUNDS)
+                } else {
+                    currentMap.setTile(x, y, if (Math.random() < 0.5) Tile.FLOOR else Tile.WALL)
+                }
             }
         }
         return this
@@ -28,8 +32,8 @@ class MapBuilder(private val width: Int, private val height: Int) {
     private fun smoothRandomizedMap(times: Int): MapBuilder {
         val smoothedTileMap: Array<Array<Tile>> = Array(currentMap.width, { Array(currentMap.height, {Tile.BOUNDS}) })
         for (Unit in 0..times) {
-            for (x in 0 until currentMap.width) {
-                for (y in 0 until currentMap.height) {
+            for (x in 1 until currentMap.width - 1) {
+                for (y in 1 until currentMap.height - 1) {
                     var floors: Int = 0
                     var rocks: Int = 0
 

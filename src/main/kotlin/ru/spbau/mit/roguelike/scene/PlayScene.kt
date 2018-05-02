@@ -36,10 +36,12 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         creaturesEngine = CreaturesEngine()
         creaturesEngine.createCreatures(creatureFactory, messages)
 
+        player = world.getPlayer()!!
+        world.positionsReachableForPlayer = world.tileMap.getAllPositionsReachableFrom(player.x, player.y)
+
         stuffFactory = StuffFactory(world, fieldOfView)
         stuffEngine = ItemsEngine()
         stuffEngine.createItems(stuffFactory)
-        player = world.getPlayer()!!
     }
 
     override fun displayOutput(terminal: AsciiPanel) {

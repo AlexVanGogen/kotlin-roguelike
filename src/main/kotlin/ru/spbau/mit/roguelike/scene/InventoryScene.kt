@@ -22,7 +22,7 @@ abstract class InventoryScene(protected open val player: Creature): Scene {
         val x = terminal.widthInCharacters - 25
 
         if (lines.size > 0) {
-            terminal.clear(' ', x, y, 120 - x, lines.size)
+            terminal.clear(' ', x, y, 155 - x, lines.size)
         }
 
         terminal.write("Inventory", x, y++)

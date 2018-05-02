@@ -9,8 +9,8 @@ import java.awt.event.KeyListener
 
 class MainApp: JFrame(), KeyListener {
 
-    private val MAIN_WINDOW_WIDTH = 1080
-    private val MAIN_WINDOW_HEIGHT = 800
+    private val MAIN_WINDOW_WIDTH = 1620
+    private val MAIN_WINDOW_HEIGHT = 880
     private val PANEL_WIDTH_PROPORTION = 9
     private val PANEL_HEIGHT_PROPORTION = 16
 
@@ -24,7 +24,6 @@ class MainApp: JFrame(), KeyListener {
     init {
         add(terminal)
         pack()
-
         currentScene = StartScene(MAIN_WINDOW_WIDTH / PANEL_WIDTH_PROPORTION, MAIN_WINDOW_HEIGHT / PANEL_HEIGHT_PROPORTION)
         addKeyListener(this)
         repaint()

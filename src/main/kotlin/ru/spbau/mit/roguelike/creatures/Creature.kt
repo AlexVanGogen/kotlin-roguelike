@@ -159,4 +159,13 @@ class Creature(val world: World,
             }
         }
     }
+
+    fun hasHackInInventory(): Boolean {
+        for (nextItem in inventory.getItems()) {
+            if (nextItem.name == "hack") {
+                return true
+            }
+        }
+        return false
+    }
 }

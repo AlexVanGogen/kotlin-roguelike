@@ -59,4 +59,10 @@ class StuffFactory(val world: World, val fieldOfView: FieldOfView) {
         world.initializeItemPosition(item)
         return item
     }
+
+    fun createHack(): Item {
+        val item = Hack('T', AsciiPanel.red, "hack")
+        world.initializeItemPositionReachableForPlayer(item)
+        return item
+    }
 }

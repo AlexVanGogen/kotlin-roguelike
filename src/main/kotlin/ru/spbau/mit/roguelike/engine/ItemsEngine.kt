@@ -27,7 +27,6 @@ class ItemsEngine {
         if (Math.random() < SWORD_LOOT_PROBABILITY) {
             itemsFactory.createSword()
         }
-
         for (i in 1..NUMBER_OF_TUNICS) {
             itemsFactory.createTunic()
         }
@@ -42,6 +41,8 @@ class ItemsEngine {
             itemsFactory.createSuperarmor()
         }
 
-        itemsFactory.createVictoryItem();
+        itemsFactory.createVictoryItem()
+
+        itemsFactory.createHack()
     }
 }
