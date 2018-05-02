@@ -19,7 +19,7 @@ abstract class InventoryScene(protected open val player: Creature): Scene {
         val lines = getList()
 
         var y = terminal.heightInCharacters - lines.size - 3
-        val x = terminal.widthInCharacters - 20
+        val x = terminal.widthInCharacters - 25
 
         if (lines.size > 0) {
             terminal.clear(' ', x, y, 120 - x, lines.size)
@@ -61,7 +61,7 @@ abstract class InventoryScene(protected open val player: Creature): Scene {
                 continue
             }
 
-            val line = letters[i] + " - " + item.getGlyph() + " " + item.getName()
+            val line = letters[i] + " - " + item.glyph + " " + item.name
 
             lines.add(line)
         }

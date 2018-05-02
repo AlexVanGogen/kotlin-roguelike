@@ -54,14 +54,14 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
             for (y in world.itemsMap[0].indices) {
                 val item = world.getItem(x, y)
                 if (item != null) {
-                    terminal.write(item.getGlyph(), x, y, item.getColor())
+                    terminal.write(item.glyph, x, y, item.color)
                 }
             }
         }
 
-        val stats = String.format(" %3d/%3d hp", player.actualHP, player.maxHP)
-        terminal.write(stats, 1, sceneHeight - 1)
-
+        terminal.write("HP: ${player.actualHP}/${player.maxHP}", 1, sceneHeight - 3)
+        terminal.write("Attack: ${player.attackStat}", 1, sceneHeight - 2)
+        terminal.write("Defense: ${player.defenseStat}", 1, sceneHeight - 1)
         displayMap(terminal, 0, 0)
         displayMessages(terminal, messages)
 
@@ -81,6 +81,7 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
                 KeyEvent.VK_DOWN -> player.moveBy(0, 1)
                 KeyEvent.VK_LEFT -> player.moveBy(-1, 0)
                 KeyEvent.VK_RIGHT -> player.moveBy(1, 0)
+                KeyEvent.VK_W -> subscene = EquipmentScene(player)
                 KeyEvent.VK_G -> player.pickupItem()
                 KeyEvent.VK_I -> subscene = DropScene(player)
             }

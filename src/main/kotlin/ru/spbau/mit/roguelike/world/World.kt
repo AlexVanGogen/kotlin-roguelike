@@ -64,7 +64,7 @@ class World(var tileMap: TileMap) {
             return creature.glyph
         }
         if (getItem(x, y) != null) {
-            return itemsMap[x][y]!!.getGlyph()
+            return itemsMap[x][y]!!.glyph
         }
         return tileMap.getTile(x, y).getGlyph()
     }
@@ -75,7 +75,7 @@ class World(var tileMap: TileMap) {
             return creature.color
         }
         if (getItem(x, y) != null) {
-            return itemsMap[x][y]!!.getColor()
+            return itemsMap[x][y]!!.color
         }
         return tileMap.getTile(x, y).getColor()
     }
@@ -104,7 +104,7 @@ class World(var tileMap: TileMap) {
                 itemsMap[p.x][p.y] = item
                 val c = this.tryToGetCreatureInPosition(p.x, p.y)
                 if (c != null) {
-                    c.notify("${item.getName()} lands right here")
+                    c.notify("${item.name} lands right here")
                 }
                 return
             } else {

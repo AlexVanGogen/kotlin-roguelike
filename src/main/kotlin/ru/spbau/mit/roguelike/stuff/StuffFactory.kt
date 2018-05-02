@@ -17,4 +17,46 @@ class StuffFactory(val world: World, val fieldOfView: FieldOfView) {
         world.initializeItemPosition(item)
         return item
     }
+
+    fun createStick(): Item {
+        val item = Weapon(')', AsciiPanel.brightGreen, "stick", 2)
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createDagger(): Item {
+        val item = Weapon(')', AsciiPanel.brightBlue, "dagger", 5)
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createSword(): Item {
+        val item = Weapon(')', AsciiPanel.brightWhite, "sword", 10)
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createTunic(): Item {
+        val item = Armor('%', AsciiPanel.brightGreen, "tunic", 2)
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createChainmail(): Item {
+        val item = Armor('%', AsciiPanel.brightBlue, "chainmail", 5)
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createFullplate(): Item {
+        val item = Armor('%', AsciiPanel.brightWhite, "fullplate armor", 10)
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createSuperarmor(): Item {
+        val item = Superarmor('A', AsciiPanel.brightWhite, "godarmor", 20, 20)
+        world.initializeItemPosition(item)
+        return item
+    }
 }

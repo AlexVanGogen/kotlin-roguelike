@@ -4,7 +4,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool
 import ru.spbau.mit.roguelike.ai.CreatureAI
 import ru.spbau.mit.roguelike.ai.PlayerAI
 import ru.spbau.mit.roguelike.inventory.Inventory
-import ru.spbau.mit.roguelike.stuff.Item
+import ru.spbau.mit.roguelike.stuff.*
 import ru.spbau.mit.roguelike.world.Tile
 import ru.spbau.mit.roguelike.world.TileMap
 import ru.spbau.mit.roguelike.world.World
@@ -18,8 +18,8 @@ class Creature(val world: World,
                val color: Color,
                val visionRadius: Int,
                val maxHP: Int,
-               val attackStat: Int,
-               val defenseStat: Int,
+               var attackStat: Int,
+               var defenseStat: Int,
                val maxItemsInInventory: Int = 0) {
 
     private lateinit var ai: CreatureAI
@@ -47,8 +47,8 @@ class Creature(val world: World,
     fun attack(creatureOnNextPosition: Creature) {
         var amount = max(0, attackStat - creatureOnNextPosition.defenseStat)
         amount = (Math.random() * amount).toInt() + 1
-        creatureOnNextPosition.lowerHP(amount, this)
         notify("You attacked the ${creatureOnNextPosition.name} for $amount damage")
+        creatureOnNextPosition.lowerHP(amount, this)
         creatureOnNextPosition.notify("The $name attacks you for $amount damage")
     }
 
@@ -98,17 +98,65 @@ class Creature(val world: World,
         }
 
         if (inventory.isFull()) {
-            doAction("Cannot grab ${itemOnPosition.getName()}: inventory is full!")
+            doAction("Cannot grab ${itemOnPosition.name}: inventory is full!")
         } else {
-            doAction("Picked up ${itemOnPosition.getName()}")
+            doAction("Picked up ${itemOnPosition.name}")
             world.removeItem(x, y)
             inventory.add(itemOnPosition)
         }
     }
 
     fun drop(item: Item) {
-        doAction("Dropped ${item.getName()}")
+        doAction("Dropped ${item.name}")
         inventory.remove(item)
+        if (item is EquippableItem) {
+            unequip(item)
+        }
         world.addItemAtEmptyPlace(item, x, y)
+    }
+
+    fun unequip(item: EquippableItem) {
+        if (!item.isEquipped()) {
+            doAction("${item.name} isn't equipped!")
+        }
+        val hasUnequipped = inventory.tryUnequip(item)
+        if (hasUnequipped) {
+            doAction("Unequip ${item.name}")
+        }
+        decreaseStats(item)
+    }
+
+    fun equip(item: EquippableItem) {
+        if (item.isEquipped()) {
+            doAction("${item.name} already equipped!")
+        } else {
+            val hasEquipped = inventory.tryEquip(item)
+            if (hasEquipped) {
+                doAction("Equipped ${item.name}")
+            }
+        }
+        increaseStats(item)
+    }
+
+    private fun decreaseStats(item: EquippableItem) {
+        when (item) {
+            is Weapon -> attackStat -= item.getAttackStat()
+            is Armor -> defenseStat -= item.getDefenseStat()
+            is Superarmor -> {
+                attackStat -= item.getAttackStat()
+                defenseStat -= item.getDefenseStat()
+            }
+        }
+    }
+
+    private fun increaseStats(item: EquippableItem) {
+        when (item) {
+            is Weapon -> attackStat += item.getAttackStat()
+            is Armor -> defenseStat += item.getDefenseStat()
+            is Superarmor -> {
+                attackStat += item.getAttackStat()
+                defenseStat += item.getDefenseStat()
+            }
+        }
     }
 }
