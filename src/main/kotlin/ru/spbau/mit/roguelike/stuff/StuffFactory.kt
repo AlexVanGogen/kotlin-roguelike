@@ -12,8 +12,32 @@ class StuffFactory(val world: World, val fieldOfView: FieldOfView) {
         return rock
     }
 
-    fun createVictoryItem(): Item {
-        val item = Item('*', AsciiPanel.brightWhite, "teddy bear")
+    fun createFireElement(): Item {
+        val item = Element('*', AsciiPanel.brightRed, "fire")
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createWaterElement(): Item {
+        val item = Element('*', AsciiPanel.brightBlue, "water")
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createGrassElement(): Item {
+        val item = Element('*', AsciiPanel.brightGreen, "grass")
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createAirElement(): Item {
+        val item = Element('*', AsciiPanel.brightCyan, "air")
+        world.initializeItemPosition(item)
+        return item
+    }
+
+    fun createFinalElement(): Item {
+        val item = FinalElement('*', AsciiPanel.brightWhite, "UML diagram")
         world.initializeItemPosition(item)
         return item
     }
@@ -49,13 +73,13 @@ class StuffFactory(val world: World, val fieldOfView: FieldOfView) {
     }
 
     fun createFullplate(): Item {
-        val item = Armor('%', AsciiPanel.brightWhite, "fullplate armor", 10)
+        val item = Armor('%', AsciiPanel.brightWhite, "fullplate", 10)
         world.initializeItemPosition(item)
         return item
     }
 
     fun createSuperarmor(): Item {
-        val item = Superarmor('A', AsciiPanel.brightWhite, "godarmor", 20, 20)
+        val item = Superarmor('A', AsciiPanel.brightWhite, "GODARMOR", 20, 20)
         world.initializeItemPosition(item)
         return item
     }

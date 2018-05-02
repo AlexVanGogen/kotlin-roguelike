@@ -23,32 +23,32 @@ class Inventory(private val maxItems: Int) {
 
     fun isFull() = items.size == maxItems
 
-    fun tryEquip(item: EquippableItem): Boolean {
+    fun tryEquip(item: EquippableItem): List<EquippableItem>? {
         if (item is Superarmor) {
             if (item in equipment) {
-                return false
+                return null
             } else {
+                val unequippedElements = equipment.toList()
+                equipment.forEach { it.unequip() }
                 equipment.clear()
                 equipment.add(item)
                 item.equip()
-                return true
+                return unequippedElements
             }
         } else {
-            if (item !in equipment) {
-                equipment.add(item)
-                item.equip()
-                return true
-            }
             for (nextEquipment in equipment) {
-                if (nextEquipment.name == item.name) {
+                if (nextEquipment.glyph == item.glyph || nextEquipment is Superarmor) {
                     equipment.remove(nextEquipment)
+                    nextEquipment.unequip()
                     equipment.add(item)
                     item.equip()
-                    return true
+                    return listOf(nextEquipment)
                 }
             }
+            equipment.add(item)
+            item.equip()
+            return listOf()
         }
-        return false
     }
 
     fun tryUnequip(item: EquippableItem): Boolean {

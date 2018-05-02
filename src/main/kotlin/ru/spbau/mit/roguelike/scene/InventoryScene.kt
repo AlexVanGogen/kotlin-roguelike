@@ -4,6 +4,7 @@ import ru.spbau.mit.roguelike.creatures.Creature
 import ru.spbau.mit.roguelike.stuff.Item
 import java.util.ArrayList
 import asciiPanel.AsciiPanel
+import ru.spbau.mit.roguelike.stuff.EquippableItem
 import java.awt.event.KeyEvent
 
 
@@ -22,7 +23,7 @@ abstract class InventoryScene(protected open val player: Creature): Scene {
         val x = terminal.widthInCharacters - 25
 
         if (lines.size > 0) {
-            terminal.clear(' ', x, y, 155 - x, lines.size)
+            terminal.clear(' ', x, y, 156 - x, lines.size)
         }
 
         terminal.write("Inventory", x, y++)
@@ -61,7 +62,11 @@ abstract class InventoryScene(protected open val player: Creature): Scene {
                 continue
             }
 
-            val line = letters[i] + " - " + item.glyph + " " + item.name
+            var line = letters[i] + " - " + item.glyph + " " + item.name
+
+            if(item is EquippableItem && item.isEquipped()) {
+                line += " (E)";
+            }
 
             lines.add(line)
         }

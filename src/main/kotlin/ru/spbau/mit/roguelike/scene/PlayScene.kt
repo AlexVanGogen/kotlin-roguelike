@@ -45,8 +45,6 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
     }
 
     override fun displayOutput(terminal: AsciiPanel) {
-        val text = "Walking..."
-        terminal.write(text, sceneWidth - text.length - 1, 1)
 
         for (creature in world.allCreatures) {
             terminal.write(creature.glyph, creature.x, creature.y, creature.color)
@@ -61,9 +59,10 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
             }
         }
 
-        terminal.write("HP: ${player.actualHP}/${player.maxHP}", 1, sceneHeight - 3)
-        terminal.write("Attack: ${player.attackStat}", 1, sceneHeight - 2)
-        terminal.write("Defense: ${player.defenseStat}", 1, sceneHeight - 1)
+        terminal.write("HP: ${player.actualHP}/${player.maxHP}", 1, sceneHeight - 4)
+        terminal.write("Attack: ${player.attackStat}", 1, sceneHeight - 3)
+        terminal.write("Defense: ${player.defenseStat}", 1, sceneHeight - 2)
+        terminal.write("Elements: ${player.numberOfElementsInInventory}/${player.maxNumberOfElements}", 1, sceneHeight - 1)
         displayMap(terminal, 0, 0)
         displayMessages(terminal, messages)
 
@@ -77,8 +76,6 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
             subscene = subscene!!.respondToUserInput(pressedKey)
         } else {
             when (pressedKey.keyCode) {
-                KeyEvent.VK_ESCAPE -> return LoseScene(sceneWidth, sceneHeight)
-                KeyEvent.VK_ENTER -> return WinScene(sceneWidth, sceneHeight)
                 KeyEvent.VK_UP -> player.moveBy(0, -1)
                 KeyEvent.VK_DOWN -> player.moveBy(0, 1)
                 KeyEvent.VK_LEFT -> player.moveBy(-1, 0)
@@ -90,6 +87,17 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         }
         if (subscene == null) {
             creaturesEngine.updateCreatures(world)
+        }
+        if (player.hasWon) {
+            return WinScene(sceneWidth, sceneHeight)
+        }
+        if (player.numberOfElementsInInventory == player.maxNumberOfElements) {
+            player.doAction("Final element has spawned!")
+            player.maxNumberOfElements = 5
+            stuffFactory.createFinalElement()
+        }
+        if (player.actualHP < 1) {
+            return LoseScene(sceneWidth, sceneHeight)
         }
         return this
     }

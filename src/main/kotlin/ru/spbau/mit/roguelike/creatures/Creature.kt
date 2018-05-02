@@ -27,6 +27,9 @@ class Creature(val world: World,
     var y: Int = 0
     var actualHP: Int = maxHP
     val inventory = Inventory(maxItemsInInventory)
+    var numberOfElementsInInventory = 0
+    var maxNumberOfElements = 4
+    var hasWon = false
 
     fun setAI(creatureAI: CreatureAI) {
         ai = creatureAI
@@ -103,6 +106,12 @@ class Creature(val world: World,
             doAction("Picked up ${itemOnPosition.name}")
             world.removeItem(x, y)
             inventory.add(itemOnPosition)
+            if (itemOnPosition is Element) {
+                if (itemOnPosition is FinalElement) {
+                    hasWon = true
+                }
+                addElementToInventory(itemOnPosition)
+            }
         }
     }
 
@@ -113,6 +122,19 @@ class Creature(val world: World,
             unequip(item)
         }
         world.addItemAtEmptyPlace(item, x, y)
+        if (item is Element) {
+            removeElementFromInventory(item)
+        }
+    }
+
+    private fun addElementToInventory(element: Element) {
+        numberOfElementsInInventory++
+        doAction("Element ${element.name} has been found")
+    }
+
+    private fun removeElementFromInventory(element: Element) {
+        numberOfElementsInInventory--
+        doAction("Element ${element.name} has been dropped :(")
     }
 
     fun unequip(item: EquippableItem) {
@@ -122,20 +144,23 @@ class Creature(val world: World,
         val hasUnequipped = inventory.tryUnequip(item)
         if (hasUnequipped) {
             doAction("Unequip ${item.name}")
+            decreaseStats(item)
         }
-        decreaseStats(item)
     }
 
     fun equip(item: EquippableItem) {
         if (item.isEquipped()) {
             doAction("${item.name} already equipped!")
         } else {
-            val hasEquipped = inventory.tryEquip(item)
-            if (hasEquipped) {
+            val probablyUnequippedItems = inventory.tryEquip(item)
+            if (probablyUnequippedItems != null) {
                 doAction("Equipped ${item.name}")
+                increaseStats(item)
+                for (nextItem in probablyUnequippedItems) {
+                    decreaseStats(nextItem)
+                }
             }
         }
-        increaseStats(item)
     }
 
     private fun decreaseStats(item: EquippableItem) {
