@@ -24,6 +24,12 @@
 
 Рядом со статами отображается, какие особые предметы Тигран уже собрал. Так он может контролировать, насколько он далек от победы.
 
-## Логическая структура
+## Диаграмма классов
+
+![alt text](https://github.com/AlexVanGogen/kotlin-roguelike/edit/master/docs/ClassDiagram.png "Class diagram")
 
 ## Диаграммы последовательностей и конечных автоматов
+
+![alt text](https://github.com/AlexVanGogen/kotlin-roguelike/edit/master/docs/SequenceDiagram.png "Sequence diagram")
+
+![alt text](https://github.com/AlexVanGogen/kotlin-roguelike/edit/master/docs/ActivityDiagram.png "Finite automata diagram")
