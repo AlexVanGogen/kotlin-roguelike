@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile 'org.junit.jupiter:junit-jupiter-api:5.1.0'
     compile files("libs/asciiPanel.jar")
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
