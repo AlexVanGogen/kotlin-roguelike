@@ -1,21 +1,39 @@
 package ru.spbau.mit.roguelike.world
 
+/**
+ * Class that builds map and initial tiles on it.
+ *
+ * @property width width of the map
+ * @property height height of the map
+ */
 class MapBuilder(private val width: Int, private val height: Int) {
 
+    /**
+     * Current tiles state
+     */
     private var currentMap: TileMap
 
     init {
         currentMap = TileMap(Array(width, { Array(height, {Tile.BOUNDS}) }))
     }
 
+    /**
+     * End building process
+     */
     fun buildMap(): TileMap {
         return currentMap
     }
 
-    fun makeCaves(): MapBuilder {
+    /**
+     * Add walls to the map
+     */
+    fun makeWalls(): MapBuilder {
         return buildRandomMap().smoothRandomizedMap(3)
     }
 
+    /**
+     * Randomly distribute walls around the map
+     */
     private fun buildRandomMap(): MapBuilder {
         for (x in 0 until currentMap.width) {
             for (y in 0 until currentMap.height) {
@@ -29,6 +47,9 @@ class MapBuilder(private val width: Int, private val height: Int) {
         return this
     }
 
+    /**
+     * Make walls more adequate by merging some of them
+     */
     private fun smoothRandomizedMap(times: Int): MapBuilder {
         val smoothedTileMap: Array<Array<Tile>> = Array(currentMap.width, { Array(currentMap.height, {Tile.BOUNDS}) })
         for (Unit in 0..times) {

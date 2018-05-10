@@ -23,6 +23,7 @@ hs_err_pid*
 
 .idea/
 .gradle/
-build/
 !gradle-wrapper.jar
 !asciiPanel.jar
+build/kotlin-build/version.txt
+out/

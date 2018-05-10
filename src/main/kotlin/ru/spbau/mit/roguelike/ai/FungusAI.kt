@@ -4,15 +4,35 @@ import ru.spbau.mit.roguelike.creatures.Creature
 import ru.spbau.mit.roguelike.creatures.CreatureFactory
 import java.util.*
 
+/**
+ * Fungus's logic.
+ *
+ * @property creature creature that assigned to be a fungus
+ * @property creatureFactory factory that creates new funguses
+ */
 class FungusAI(val creature: Creature, val creatureFactory: CreatureFactory): CreatureAI(creature) {
 
+    /**
+     * How many funguses can be created from that fungus
+     */
     private val MIN_SPREAD = 1
     private val MAX_SPREAD = 2
+
+    /**
+     * How far from this fungus new funguses can appear
+     */
     private val MAX_SPREAD_DISTANCE = 3
+
+    /**
+     * Probability of new funguses appearing
+     */
     private val SPREAD_PROBABILITY = 0.001
 
     private val random = Random(42)
 
+    /**
+     * Behavior of creature when the state of the world is updating
+     */
     override fun onUpdate() {
         if (Math.random() <= SPREAD_PROBABILITY) {
             spread()
@@ -20,6 +40,9 @@ class FungusAI(val creature: Creature, val creatureFactory: CreatureFactory): Cr
         toxic()
     }
 
+    /**
+     * Creates new funguses from that fungus
+     */
     private fun spread() {
         val spreadFactor = random.nextInt(MAX_SPREAD - MIN_SPREAD) + MIN_SPREAD
         for (Unit in 1..spreadFactor) {
@@ -39,6 +62,9 @@ class FungusAI(val creature: Creature, val creatureFactory: CreatureFactory): Cr
         }
     }
 
+    /**
+     * Lower HP of nearby players
+     */
     private fun toxic() {
         val x = creature.x
         val y = creature.y

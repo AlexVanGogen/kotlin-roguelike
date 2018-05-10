@@ -4,13 +4,13 @@ import asciiPanel.AsciiPanel
 import ru.spbau.mit.roguelike.vision.FieldOfView
 import ru.spbau.mit.roguelike.world.World
 
+/**
+ * Factory with methods for creating each item in the world
+ *
+ * @property world current world state
+ * @property fieldOfView part of world what player had seen whenever
+ */
 class StuffFactory(val world: World, val fieldOfView: FieldOfView) {
-
-    fun createRock(): Item {
-        val rock = Item('o', AsciiPanel.yellow, "rock")
-        world.initializeItemPosition(rock)
-        return rock
-    }
 
     fun createFireElement(): Item {
         val item = Element('*', AsciiPanel.brightRed, "fire")

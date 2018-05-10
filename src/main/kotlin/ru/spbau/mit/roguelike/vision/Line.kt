@@ -2,9 +2,12 @@ package ru.spbau.mit.roguelike.vision
 
 import kotlin.math.abs
 
-class Line(var x0: Int, var y0: Int, val x1: Int, val y1: Int): Iterable<Point> {
+/**
+ * Raycasting line defined by points ([x0], [y0]) and ([x1], [y1]), to form [FieldOfView]
+ */
+class Line(var x0: Int, var y0: Int, x1: Int, y1: Int): Iterable<Point> {
 
-    val points = ArrayList<Point>()
+    private val points = ArrayList<Point>()
 
     init {
         val dx = abs(x1 - x0)

@@ -12,23 +12,74 @@ import ru.spbau.mit.roguelike.world.World
 import java.awt.event.KeyEvent
 import java.awt.Color
 
-
+/**
+ * Main scene that represents [world], [player], creatures ([CreatureFactory], [CreaturesEngine])
+ * and items ([StuffFactory], [ItemsEngine]).
+ *
+ * @property sceneWidth scene width
+ * @property sceneHeight scene height
+ */
 class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Scene {
 
+    /**
+     * Reference to the current world state.
+     */
     private lateinit var world: World
 
+    /**
+     * Width and heights of our world.
+     */
     private var gameMapWidth: Int = 3 * sceneWidth / 4
     private var gameMapHeight: Int = 3 * sceneHeight / 4
+
+    /**
+     * Player instance.
+     */
     private val player: Creature
+
+    /**
+     * Factory for creating any possible creature in the world.
+     * For the details, see [CreatureFactory] class.
+     */
     private val creatureFactory: CreatureFactory
+
+    /**
+     * Engine for creating all needed creatures in the world.
+     * For the details, see [CreaturesEngine] class.
+     */
     private val creaturesEngine: CreaturesEngine
+
+    /**
+     * Factory for creating any possible item in the world.
+     * For the details, see [StuffFactory] class.
+     */
     private val stuffFactory: StuffFactory
+
+    /**
+     * Engine for creating all needed items in the world.
+     * For the details, see [ItemsEngine] class.
+     */
     private val stuffEngine: ItemsEngine
+
+    /**
+     * All messages that must be displayed now.
+     */
     private val messages = ArrayList<String>()
+
+    /**
+     * Current map state according to what parts of map player saw and where he is right now.
+     * For the details, see [FieldOfView] class.
+     */
     private val fieldOfView: FieldOfView
 
+    /**
+     * Window that can be displayed along with the playground.
+     */
     private var subscene: Scene? = null
 
+    /**
+     * Creates content for the world scene.
+     */
     init {
         createMap()
         fieldOfView = FieldOfView(world)
@@ -44,6 +95,11 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         stuffEngine.createItems(stuffFactory)
     }
 
+    /**
+     * Displays table of ASCII symbols to console.
+     *
+     * @param terminal table of ASCII symbols that represents the world.
+     */
     override fun displayOutput(terminal: AsciiPanel) {
 
         for (creature in world.allCreatures) {
@@ -71,6 +127,12 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         }
     }
 
+    /**
+     * Delegates some action according to what user presses when current scene is active.
+     *
+     * @param pressedKey key code that user has pressed
+     * @return active scene after keypressing action
+     */
     override fun respondToUserInput(pressedKey: KeyEvent): Scene {
         if (subscene != null) {
             subscene = subscene!!.respondToUserInput(pressedKey)
@@ -102,10 +164,17 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         return this
     }
 
+    /**
+     * Creates map with basic objects (walls, bounds).
+     */
     private fun createMap() {
-        world = World(MapBuilder(gameMapWidth, gameMapHeight).makeCaves().buildMap())
+        world = World(MapBuilder(gameMapWidth, gameMapHeight).makeWalls().buildMap())
     }
 
+    /**
+     * Displays ASCII symbols that represent map to [terminal]
+     * with the top-left corner on coordinates ([left], [top]).
+     */
     private fun displayMap(terminal: AsciiPanel, left: Int, top: Int) {
         fieldOfView.update(player.x, player.y, player.visionRadius)
 
@@ -128,6 +197,9 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         }
     }
 
+    /**
+     * Displays game notifications ([messages]) to [terminal].
+     */
     private fun displayMessages(terminal: AsciiPanel, messages: MutableList<String>) {
         val top = sceneHeight - messages.size
         for (i in messages.indices) {

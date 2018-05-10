@@ -1,8 +1,10 @@
 package ru.spbau.mit.roguelike.engine
 
 import ru.spbau.mit.roguelike.stuff.StuffFactory
-import kotlin.math.round
 
+/**
+ * Engine for creating all needed items in the world.
+ */
 class ItemsEngine {
 
     private val NUMBER_OF_STICKS = 2
@@ -11,8 +13,13 @@ class ItemsEngine {
     private val NUMBER_OF_CHAINMAILS = 1
     private val SWORD_LOOT_PROBABILITY = 0.5
     private val FULLPLATE_LOOT_PROBABILITY = 0.5
-    private val GODARMOR_LOOT_PROBABILITY = 1.0
+    private val GODARMOR_LOOT_PROBABILITY = 0.1
 
+    /**
+     * Create all items.
+     *
+     * @param itemsFactory factory that contains logic of items creating
+     */
     fun createItems(itemsFactory: StuffFactory) {
 
         for (i in 1..NUMBER_OF_STICKS) {

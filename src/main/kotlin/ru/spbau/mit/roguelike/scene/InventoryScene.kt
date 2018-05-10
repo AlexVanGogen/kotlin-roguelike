@@ -7,15 +7,40 @@ import asciiPanel.AsciiPanel
 import ru.spbau.mit.roguelike.stuff.EquippableItem
 import java.awt.event.KeyEvent
 
-
+/**
+ * Scene that shows some kind of player looted during the game.
+ * Player can drop whatever he wants.
+ *
+ * Current implementations: [DropScene], [EquipmentScene]
+ *
+ * @property player player instance
+ */
 abstract class InventoryScene(protected open val player: Creature): Scene {
 
     private val letters = "abcdefghijklmnopqrstuvwxyz"
 
+    /**
+     * Returns the verb that describes main action when current scene is active.
+     */
     protected abstract fun getVerb(): String
+
+    /**
+     * Checks whether given [item] can be handled somehow when current scene is active.
+     */
     protected abstract fun isAcceptable(item: Item): Boolean
+
+    /**
+     * Does some action with given [item].
+     *
+     * @return active scen after completing of action
+     */
     protected abstract fun use(item: Item): Scene?
 
+    /**
+     * Displays table of ASCII symbols to console.
+     *
+     * @param terminal table of ASCII symbols that represents the world with inventory window opened.
+     */
     override fun displayOutput(terminal: AsciiPanel) {
         val lines = getList()
 
@@ -37,6 +62,12 @@ abstract class InventoryScene(protected open val player: Creature): Scene {
         terminal.repaint()
     }
 
+    /**
+     * Delegates some action according to what user presses when current scene is active.
+     *
+     * @param pressedKey key code that user has pressed
+     * @return active scene after keypressing action
+     */
     override fun respondToUserInput(pressedKey: KeyEvent): Scene? {
         val c = pressedKey.keyChar
 
@@ -51,6 +82,9 @@ abstract class InventoryScene(protected open val player: Creature): Scene {
         }
     }
 
+    /**
+     * Return list of items in the following format: <letter> - <glyph> - <name>.
+     */
     private fun getList(): ArrayList<String> {
         val lines = ArrayList<String>()
         val inventory = player.inventory.getItems()

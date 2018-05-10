@@ -1,2 +1,0 @@
-# kotlin-roguelike
-Kotlin roguelike
