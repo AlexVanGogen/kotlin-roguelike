@@ -265,11 +265,11 @@ class Creature(val world: World,
      */
     private fun decreaseStats(item: EquippableItem) {
         when (item) {
-            is Weapon -> attackStat -= item.getAttackStat()
-            is Armor -> defenseStat -= item.getDefenseStat()
+            is Weapon -> attackStat -= item.attackStat
+            is Armor -> defenseStat -= item.defenseStat
             is Superarmor -> {
-                attackStat -= item.getAttackStat()
-                defenseStat -= item.getDefenseStat()
+                attackStat -= item.attackStat
+                defenseStat -= item.defenseStat
             }
         }
     }
@@ -279,11 +279,11 @@ class Creature(val world: World,
      */
     private fun increaseStats(item: EquippableItem) {
         when (item) {
-            is Weapon -> attackStat += item.getAttackStat()
-            is Armor -> defenseStat += item.getDefenseStat()
+            is Weapon -> attackStat += item.attackStat
+            is Armor -> defenseStat += item.defenseStat
             is Superarmor -> {
-                attackStat += item.getAttackStat()
-                defenseStat += item.getDefenseStat()
+                attackStat += item.attackStat
+                defenseStat += item.defenseStat
             }
         }
     }

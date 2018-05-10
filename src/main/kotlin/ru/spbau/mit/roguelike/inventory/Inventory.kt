@@ -63,7 +63,7 @@ class Inventory(private val maxItems: Int) {
             }
         } else {
             for (nextEquipment in equipment) {
-                if (nextEquipment.glyph == item.glyph || nextEquipment is Superarmor) {
+                if (nextEquipment.javaClass == item.javaClass || nextEquipment is Superarmor) {
                     equipment.remove(nextEquipment)
                     nextEquipment.unequip()
                     equipment.add(item)
