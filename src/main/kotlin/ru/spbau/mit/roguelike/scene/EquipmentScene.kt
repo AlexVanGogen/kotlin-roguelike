@@ -17,7 +17,7 @@ class EquipmentScene(override val player: Creature): InventoryScene(player) {
     /**
      * Returns the verb that describes main action when current scene is active.
      */
-    override fun getVerb(): String = "equip"
+    override fun getVerb(): String = "(un)equip"
 
     /**
      * Checks whether given [item] can be handled somehow when current scene is active.
@@ -33,7 +33,11 @@ class EquipmentScene(override val player: Creature): InventoryScene(player) {
      */
     override fun use(item: Item): Scene? {
         if (item is EquippableItem) {
-            player.equip(item)
+            if (item.isEquipped()) {
+                player.unequip(item)
+            } else {
+                player.equip(item)
+            }
         }
         return this
     }
