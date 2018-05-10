@@ -1,7 +1,7 @@
 package ru.spbau.mit.roguelike.ai
 
+import org.apache.logging.log4j.LogManager
 import ru.spbau.mit.roguelike.creatures.Creature
-import ru.spbau.mit.roguelike.stuff.Hack
 import ru.spbau.mit.roguelike.vision.FieldOfView
 import ru.spbau.mit.roguelike.world.Tile
 
@@ -13,6 +13,8 @@ import ru.spbau.mit.roguelike.world.Tile
  * @property fieldOfView part of world what player had seen whenever
  */
 class PlayerAI(val creature: Creature, val messages: ArrayList<String>, private val fieldOfView: FieldOfView): CreatureAI(creature) {
+
+    private val playerAILogger = LogManager.getLogger(PlayerAI::class.java)
 
     /**
      * Behavior of creature when it tries to move to position ([x], [y])
@@ -50,6 +52,7 @@ class PlayerAI(val creature: Creature, val messages: ArrayList<String>, private 
      * Behavior of creature when it is notified with [message]
      */
     override fun onNotify(message: String) {
+        playerAILogger.info(message)
         messages.add(message)
         if (messages.size > 5) {
             messages.removeAt(0)

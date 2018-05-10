@@ -1,6 +1,7 @@
 package ru.spbau.mit.roguelike.scene
 
 import asciiPanel.AsciiPanel
+import org.apache.logging.log4j.LogManager
 import ru.spbau.mit.roguelike.creatures.Creature
 import ru.spbau.mit.roguelike.creatures.CreatureFactory
 import ru.spbau.mit.roguelike.engine.CreaturesEngine
@@ -20,6 +21,8 @@ import java.awt.Color
  * @property sceneHeight scene height
  */
 class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Scene {
+
+    private val playSceneLogger = LogManager.getLogger(PlayScene::class.java)
 
     /**
      * Reference to the current world state.
@@ -73,7 +76,7 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
     private val fieldOfView: FieldOfView
 
     /**
-     * Window that can be displayed along with the playground.
+     * Window that can be displayed along wiОth the playground.
      */
     private var subscene: Scene? = null
 
@@ -81,6 +84,7 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
      * Creates content for the world scene.
      */
     init {
+        playSceneLogger.info("Creating playing scene")
         createMap()
         fieldOfView = FieldOfView(world)
         creatureFactory = CreatureFactory(world, fieldOfView)
@@ -93,6 +97,7 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         stuffFactory = StuffFactory(world, fieldOfView)
         stuffEngine = ItemsEngine()
         stuffEngine.createItems(stuffFactory)
+        playSceneLogger.info("Scene successfully created")
     }
 
     /**

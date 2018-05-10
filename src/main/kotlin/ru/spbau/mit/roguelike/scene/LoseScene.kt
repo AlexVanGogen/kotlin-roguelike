@@ -1,6 +1,7 @@
 package ru.spbau.mit.roguelike.scene
 
 import asciiPanel.AsciiPanel
+import org.apache.logging.log4j.LogManager
 import java.awt.event.KeyEvent
 
 /**
@@ -11,12 +12,15 @@ import java.awt.event.KeyEvent
  */
 class LoseScene(private val sceneWidth: Int, private val sceneHeight: Int) : Scene {
 
+    private val loseSceneLogger = LogManager.getLogger(LoseScene::class.java)
+
     /**
      * Displays table of ASCII symbols to console.
      *
      * @param terminal table of ASCII symbols that represents the world after loosing.
      */
     override fun displayOutput(terminal: AsciiPanel) {
+        loseSceneLogger.info("Player has lost")
         terminal.write("You lost.", 1, 1);
         terminal.writeCenter("-- press [Enter] to restart... --", sceneHeight - 1);
     }
