@@ -35,7 +35,7 @@ class EquipmentScene(override val player: Creature): InventoryScene(player) {
         if (item is EquippableItem) {
             player.equip(item)
         }
-        return null
+        return this
     }
 
 }
