@@ -125,6 +125,10 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
         terminal.write("Defense: ${player.defenseStat}", 1, sceneHeight - 2)
         terminal.write("Elements: ${player.numberOfElementsInInventory}/${player.maxNumberOfElements}", 1, sceneHeight - 1)
         displayMap(terminal, 0, 0)
+        terminal.write("Press [e] to open equipment", sceneWidth - 35, 1)
+        terminal.write("Press [i] to open inventory", sceneWidth - 35, 2)
+        terminal.write("Press [g] to pickup item", sceneWidth - 35, 3)
+        terminal.write("Press [Esc] to return to the game", sceneWidth - 35, 3)
         displayMessages(terminal, messages)
 
         if (subscene != null) {
@@ -147,7 +151,7 @@ class PlayScene(private val sceneWidth: Int, private val sceneHeight: Int) : Sce
                 KeyEvent.VK_DOWN -> player.moveBy(0, 1)
                 KeyEvent.VK_LEFT -> player.moveBy(-1, 0)
                 KeyEvent.VK_RIGHT -> player.moveBy(1, 0)
-                KeyEvent.VK_W -> subscene = EquipmentScene(player)
+                KeyEvent.VK_E -> subscene = EquipmentScene(player)
                 KeyEvent.VK_G -> player.pickupItem()
                 KeyEvent.VK_I -> subscene = DropScene(player)
             }
