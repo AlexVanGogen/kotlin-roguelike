@@ -26,10 +26,10 @@
 
 ## Диаграмма классов
 
-![alt text](https://github.com/AlexVanGogen/kotlin-roguelike/edit/master/docs/ClassDiagram.png "Class diagram")
+![](https://github.com/AlexVanGogen/kotlin-roguelike/blob/master/docs/ClassDiagram.png "Диаграмма классов")
 
 ## Диаграммы последовательностей и конечных автоматов
 
-![alt text](https://github.com/AlexVanGogen/kotlin-roguelike/edit/master/docs/SequenceDiagram.png "Sequence diagram")
+![](https://github.com/AlexVanGogen/kotlin-roguelike/blob/master/docs/SequenceDiagram.png "Диаграмма последовательностей")
 
-![alt text](https://github.com/AlexVanGogen/kotlin-roguelike/edit/master/docs/ActivityDiagram.png "Finite automata diagram")
+![](https://github.com/AlexVanGogen/kotlin-roguelike/blob/master/docs/AutomataDiagram.png "Диаграмма конечных автоматов")
