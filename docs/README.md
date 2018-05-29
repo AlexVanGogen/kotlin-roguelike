@@ -46,7 +46,7 @@
   
 Более детальное описание – диаграмма классов:
 
-![alt text](https://github.com/AlexVanGogen/kotlin-roguelike/blob/master/docs/NewClassDiagram.png "Class diagram")
+![alt text](https://github.com/AlexVanGogen/kotlin-roguelike/blob/master/docs/ClassDiagram.png "Class diagram")
 
 ## Диаграммы последовательностей и конечных автоматов
 
